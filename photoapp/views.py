@@ -24,11 +24,27 @@ class PhotoTagListView(PhotoListView):
         context = super().get_context_data(**kwargs)
         context["tag"] = self.get_tag()
         return context
-class PhotoDetailView(DetailView):
+class PhotoDetailView(LoginRequiredMixin, DetailView):
     model = Photo
     template_name = 'photoapp/detail.html'
     context_object_name = 'photo'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        
+        can_download_high_quality = (
+            request.user.is_authenticated 
+            and request.user.has_perm('photoapp.can_download_high_quality')
+        )
+
+        context = self.get_context_data(object=self.object, can_download_high_quality=can_download_high_quality)
+
+        
+        if can_download_high_quality:
+            context['high_quality_download_url'] = self.object.get_high_quality_download_url()
+
+        return self.render_to_response(context)
 class PhotoCreateView(LoginRequiredMixin, CreateView):
     model = Photo
     fields = ['title', 'description', 'image', 'tags']

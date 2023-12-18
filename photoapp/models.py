@@ -18,3 +18,10 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_high_quality_download_url(self):
+        # Предположим, что у вас есть разные версии изображений, 
+        # и вы храните высококачественную версию с суффиксом "_hq"
+        # Замените это на свою логику формирования URL
+        high_quality_image_url = self.image.url.replace(".", "_hq.")
+        return high_quality_image_url

@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'users',
     'crispy_forms',
     "crispy_bootstrap4",
+    "sorl.thumbnail",
+    
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 
